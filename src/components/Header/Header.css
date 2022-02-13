@@ -1,0 +1,8 @@
+header {
+  box-shadow: 1px 1px 2px 1px rgb(0 0 0 / 22%);
+  width: calc(100vw - 3rem);
+  position: fixed;
+  background-color: lavenderblush;
+  top: 0rem;
+  left: 1rem;
+}

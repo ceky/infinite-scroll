@@ -9,9 +9,9 @@ type OwnProps = {
 function Post({ text, publishDate, name }: OwnProps) {
   return (
     <div className="post-container">
-      <p>{name}</p>
-      <p>{new Date(publishDate).toLocaleString()}</p>
-      <p>{text}</p>
+      <p className="name">{name}</p>
+      <p className="date">{new Date(publishDate).toLocaleString()}</p>
+      <p className="post">{text}</p>
     </div>
   );
 }

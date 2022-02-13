@@ -1,5 +1,6 @@
 import { ContentEnum, ContentType } from '../../types/ContentType';
 import AwesomeButton from '../AwesomeButton/AwesomeButton';
+import './Header.css';
 
 type OwnProps = {
   selectedContentType: ContentType;
@@ -20,6 +21,8 @@ function Header({ selectedContentType, onUpdateContentType }: OwnProps) {
           onClick={() => onUpdateContentType(ContentEnum.POSTS)}
         />
       )}
+
+      <h2>{selectedContentType.toUpperCase()}</h2>
     </header>
   );
 }
