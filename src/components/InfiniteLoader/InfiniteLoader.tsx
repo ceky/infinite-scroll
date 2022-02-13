@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 
 type OwnProps = {
   children: JSX.Element;
@@ -11,24 +11,16 @@ function InfiniteLoader({ children, onReachBottom }: OwnProps) {
     return () => {
       window.removeEventListener('scroll', handleScroll as any);
     };
-  }, []);
+  }, [onReachBottom]);
 
-  const handleScroll = useCallback((event) => {
-    // const containerHeight = event.currentTarget.clientHeight;
-    // const scrollHeight = event.currentTarget.scrollHeight;
-
-    // const scrollTop = event.currentTarget.scrollTop;
-
-    const target = event.target as HTMLElement;
-
+  const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
       document.documentElement.scrollHeight
     ) {
       onReachBottom();
-      console.log('bottom');
     }
-  }, []);
+  };
 
   return <div>{children}</div>;
 }

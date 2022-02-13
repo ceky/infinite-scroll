@@ -13,21 +13,18 @@ function App() {
   const [selectedContentType, setSelectedContentType] = useState<ContentType>(
     ContentEnum.USERS
   );
-  const [endd, setEndd] = useState(0);
+  const [contentLength, setContentLength] = useState(NO_OF_NEW_ITEMS);
 
   const content = useFetchContent(selectedContentType);
   console.log(content);
 
-  const fetchNewEntries = useCallback(() => {
-    console.log(`end=${endd}`);
-    const newEnd = endd + NO_OF_NEW_ITEMS;
-    console.log(`newEnd=${newEnd}`);
-    setEndd(newEnd);
-  }, []);
-
   useEffect(() => {
-    console.log(endd);
-  }, [endd]);
+    setContentLength(NO_OF_NEW_ITEMS);
+  }, [selectedContentType]);
+
+  const fetchNewEntries = useCallback(() => {
+    setContentLength(contentLength + NO_OF_NEW_ITEMS);
+  }, [contentLength]);
 
   return (
     <main className="app">
@@ -38,22 +35,26 @@ function App() {
 
       <h3>List of {selectedContentType}</h3>
 
-      <InfiniteLoader onReachBottom={() => fetchNewEntries()}>
+      <InfiniteLoader onReachBottom={fetchNewEntries}>
         <ul>
-          {content
-            .slice(0, endd)
-            .map((item: any, index: number) =>
-              selectedContentType === ContentEnum.USERS ? (
-                <User key={index} name={`${item.firstName} ${item.lastName}`} />
-              ) : (
-                <Post
-                  key={index}
-                  text={item.text}
-                  publishDate={item.publishDate}
-                  name={`${item.owner?.firstName} ${item.owner?.lastName}`}
-                />
-              )
-            )}
+          {content?.length > 0 &&
+            content
+              .slice(0, contentLength)
+              .map((item: any, index: number) =>
+                selectedContentType === ContentEnum.USERS ? (
+                  <User
+                    key={index}
+                    name={`${item.firstName} ${item.lastName}`}
+                  />
+                ) : (
+                  <Post
+                    key={index}
+                    text={item.text}
+                    publishDate={item.publishDate}
+                    name={`${item.owner?.firstName} ${item.owner?.lastName}`}
+                  />
+                )
+              )}
         </ul>
       </InfiniteLoader>
     </main>
