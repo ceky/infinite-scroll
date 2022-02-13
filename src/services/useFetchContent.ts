@@ -1,32 +1,30 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import { POSTS_URL, USERS_URL, APP_ID } from './urls';
-import { ContentEnum, ContentType } from '../types/ContentType';
+import { getPokemonsUrl } from './urls';
 
-export default function useFetchContent(type: ContentType) {
+export default function useFetchContent(limit: number, offset: number) {
+  const [url, setUrl] = useState(getPokemonsUrl(limit, offset));
   const [content, setContent] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const url = type === ContentEnum.USERS ? USERS_URL : POSTS_URL;
-
   async function fetchContent() {
     setIsLoading(true);
-    const response = await axios.get(url, {
-      headers: {
-        'app-id': APP_ID,
-      },
-    });
-    setContent(response.data.data);
+
+    const response = await axios.get(url);
+
+    const results = response.data.results;
+    setContent(results);
     setIsLoading(false);
   }
 
   useEffect(() => {
-    fetchContent();
-  }, [type]);
+    setUrl(getPokemonsUrl(limit, offset));
+  }, [offset]);
 
-  return {
-    content,
-    isLoading,
-  };
+  useEffect(() => {
+    fetchContent();
+  }, [url]);
+
+  return { content, isLoading };
 }

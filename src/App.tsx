@@ -1,74 +1,40 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import './App.css';
 import Header from './components/Header/Header';
 import InfiniteLoader from './components/InfiniteLoader/InfiniteLoader';
-import Post from './components/Post/Post';
-import User from './components/User/User';
+import Pokemons from './components/Pokemons/Pokemons';
 import useFetchContent from './services/useFetchContent';
-import { ContentEnum, ContentType } from './types/ContentType';
-import { PostType } from './types/PostType';
-import { UserType } from './types/UserType';
+import { PokemonType } from './types/PokemonType';
 
 const NO_OF_NEW_ITEMS = 10;
 
 function App() {
-  const [selectedContentType, setSelectedContentType] = useState<ContentType>(
-    ContentEnum.USERS
-  );
-  const [contentLength, setContentLength] = useState(NO_OF_NEW_ITEMS);
+  const [limit, setLimit] = useState(NO_OF_NEW_ITEMS);
+  const [offset, setOffset] = useState(0);
 
-  const { content, isLoading } = useFetchContent(selectedContentType);
-
-  useEffect(() => {
-    setContentLength(NO_OF_NEW_ITEMS);
-  }, [selectedContentType]);
+  const { content, isLoading } = useFetchContent(limit, offset);
 
   const fetchNewEntries = useCallback(() => {
-    setContentLength(contentLength + NO_OF_NEW_ITEMS);
-  }, [contentLength]);
+    if (!isLoading) {
+      setLimit(limit + NO_OF_NEW_ITEMS);
+      setOffset(offset + NO_OF_NEW_ITEMS);
+    }
+  }, [limit, offset]);
 
-  const onUpdateContentType = (type: ContentType) => {
-    setSelectedContentType(type);
-  };
-
-  function renderUsers(item: UserType, index: number) {
-    return (
-      <User
-        key={index}
-        name={`${item.firstName} ${item.lastName}`}
-        pictureUrl={item.picture}
-      />
-    );
-  }
-
-  function renderPosts(item: PostType, index: number) {
-    return (
-      <Post
-        key={index}
-        text={item.text}
-        publishDate={item.publishDate}
-        name={`${item.owner?.firstName} ${item.owner?.lastName}`}
-      />
-    );
+  function renderPokemons(item: PokemonType, index: number) {
+    return <Pokemons key={index} name={item.name} />;
   }
 
   return (
-    <main className="app">
-      <Header
-        selectedContentType={selectedContentType}
-        onUpdateContentType={(type) => onUpdateContentType(type)}
-      />
+    <main>
+      <Header />
 
-      <InfiniteLoader onReachBottom={fetchNewEntries} isLoading={isLoading}>
+      <InfiniteLoader onReachBottom={fetchNewEntries}>
         <ul>
           {content?.length > 0 &&
-            content
-              .slice(0, contentLength)
-              .map((item: any, index: number) =>
-                selectedContentType === ContentEnum.USERS
-                  ? renderUsers(item, index)
-                  : renderPosts(item, index)
-              )}
+            content.map((item: any, index: number) =>
+              renderPokemons(item, index)
+            )}
         </ul>
       </InfiniteLoader>
     </main>

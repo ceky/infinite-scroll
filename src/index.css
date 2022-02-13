@@ -4,10 +4,3 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-:root {
-  --postsColorLight: rgb(253, 246, 178);
-  --postsColorDark: rgb(142, 75, 16);
-  --usersColorLight: rgb(225, 239, 254);
-  --usersColorDark: rgb(26, 86, 219);
-}
