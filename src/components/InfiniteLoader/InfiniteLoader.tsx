@@ -3,10 +3,11 @@ import './InfiniteLoader.css';
 
 type OwnProps = {
   children: JSX.Element;
+  isLoading: boolean;
   onReachBottom: () => any;
 };
 
-function InfiniteLoader({ children, onReachBottom }: OwnProps) {
+function InfiniteLoader({ children, isLoading, onReachBottom }: OwnProps) {
   useEffect(() => {
     window.addEventListener('scroll', handleScroll as any);
     return () => {
@@ -26,6 +27,7 @@ function InfiniteLoader({ children, onReachBottom }: OwnProps) {
   return (
     <div className="infinite-loader">
       <div>{children}</div>
+      {isLoading && <p className="loading">Loading...</p>}
     </div>
   );
 }
