@@ -1,14 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import Header from './components/Header/Header';
 import InfiniteLoader from './components/InfiniteLoader/InfiniteLoader';
 import Pokemons from './components/Pokemons/Pokemons';
 import { fetchPokemonsList } from './services/fetchPokemonsService';
-import {
-  fetchPokemons,
-  fetchPokemonsSuccess,
-} from './state/action-creators/pokemons-middleware';
+
 import { ApplicationState } from './types/ApplicationState';
 import { PokemonType } from './types/PokemonType';
 
@@ -17,22 +14,13 @@ function App() {
 
   const dispatch = useDispatch();
 
-  const fetchNewPokemons = () => {
-    dispatch(fetchPokemons());
-
-    fetchPokemonsList(pokemons.offset).then((response) => {
-      const pokemons = response.data.results;
-      dispatch(fetchPokemonsSuccess(pokemons));
-    });
-  };
-
   useEffect(() => {
-    fetchNewPokemons();
+    fetchPokemonsList(pokemons.offset, dispatch);
   }, []);
 
   const fetchNewEntries = useCallback(() => {
     if (!pokemons.isLoading) {
-      fetchNewPokemons();
+      fetchPokemonsList(pokemons.offset, dispatch);
     }
   }, [pokemons]);
 
@@ -50,7 +38,7 @@ function App() {
       >
         <ul>
           {pokemons?.pokemonList?.length > 0 &&
-            pokemons?.pokemonList.map((item: PokemonType, index: number) =>
+            pokemons.pokemonList.map((item: PokemonType, index: number) =>
               renderPokemons(item, index)
             )}
         </ul>
