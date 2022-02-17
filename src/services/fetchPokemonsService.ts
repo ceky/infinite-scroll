@@ -7,11 +7,11 @@ import {
 
 import { getPokemonsUrl } from './urls';
 
-export function fetchPokemonsList(offset: number, dispatch: Dispatch<any>) {
-  dispatch(fetchPokemons());
+export const fetchPokemonsList =
+  (offset: number) => async (dispatch: Dispatch<any>) => {
+    dispatch(fetchPokemons());
 
-  return axios.get(getPokemonsUrl(offset)).then((response) => {
-    const pokemons = response.data.results;
-    dispatch(fetchPokemonsSuccess(pokemons));
-  });
-}
+    const response = await axios.get(getPokemonsUrl(offset));
+
+    dispatch(fetchPokemonsSuccess(response.data.results));
+  };

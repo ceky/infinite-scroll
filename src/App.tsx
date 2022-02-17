@@ -15,12 +15,12 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchPokemonsList(pokemons.offset, dispatch);
+    dispatch(fetchPokemonsList(pokemons.offset));
   }, []);
 
   const fetchNewEntries = useCallback(() => {
     if (!pokemons.isLoading) {
-      fetchPokemonsList(pokemons.offset, dispatch);
+      dispatch(fetchPokemonsList(pokemons.offset));
     }
   }, [pokemons]);
 
