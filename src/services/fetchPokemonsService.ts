@@ -3,7 +3,7 @@ import { Dispatch } from 'react';
 import {
   fetchPokemons,
   fetchPokemonsSuccess,
-} from '../state/action-creators/pokemons-middleware';
+} from '../state/action-creators/fetchPokemons';
 
 import { getPokemonsUrl } from './urls';
 
