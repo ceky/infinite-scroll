@@ -25,10 +25,10 @@ function InfiniteLoader({ children, isLoading, onReachBottom }: OwnProps) {
   };
 
   return (
-    <div className="infinite-loader">
-      <div>{children}</div>
+    <main className="infinite-loader">
+      {children}
       {isLoading && <p className="loading">Loading...</p>}
-    </div>
+    </main>
   );
 }
 
