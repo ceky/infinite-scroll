@@ -4,7 +4,7 @@ import {
   FetchPokemonsSuccessAction,
   FETCH_POKEMONS,
   FETCH_POKEMONS_SUCCESS,
-} from '../action-creators/pokemons-middleware';
+} from '../action-creators/fetchPokemons';
 
 const initialState: Pokemons = {
   isLoading: false,
